@@ -4,26 +4,33 @@ async function loadData() {
   const response = await fetch(SHEET_URL);
   const text = await response.text();
 
-  // Split CSV rows
-const parsed = Papa.parse(text, {
-  header: true,
-  skipEmptyLines: true
-});
+  // Parse CSV with PapaParse
+  const parsed = Papa.parse(text, {
+    header: true,
+    skipEmptyLines: true
+  });
 
-const rows = parsed.data;
+  const rows = parsed.data;
 
   // Group by sector
   const groups = {};
-rows.forEach(row => {
-  const sector       = row["Sector"];
-  const kpi          = row["KPI"];
-  const baseline     = row["Baseline"];
-  const current      = row["Current"];
-  const target2030   = row["2030Target"];
-  const target2040   = row["2040Target"];
-  const target2050   = row["2050Target"];
-  const notes        = row["Notes"];
+  rows.forEach(row => {
+    const sector       = row["Sector"];
+    const kpi          = row["KPI"];
+    const baseline     = row["Baseline"];
+    const current      = row["Current"];
+    const target2030   = row["2030Target"];
+    const target2040   = row["2040Target"];
+    const target2050   = row["2050Target"];
+    const notes        = row["Notes"];
 
+    if (!sector) return;
+
+    if (!groups[sector]) groups[sector] = [];
+    groups[sector].push({ kpi, baseline, current, target2030, target2040, target2050, notes });
+  });
+
+  // Get container once
   const container = document.getElementById("scorecard");
 
   // Build UI panels
