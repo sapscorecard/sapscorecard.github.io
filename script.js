@@ -68,7 +68,7 @@ async function loadData() {
   if (currentRow) {
     currentRow.style.backgroundColor = item.color;
     currentRow.style.borderRadius = "4px";
-    currentRow.style.padding = "2px 6px";
+    currentRow.style.padding = "2px 2px";
   }
 }
 
