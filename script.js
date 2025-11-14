@@ -8,7 +8,7 @@ async function loadData() {
   // Group by sector
   const groups = {};
   rows.forEach(row => {
-    const [sector, kpi, baseline, current, target, notes] = row;
+    const [Sector, KPI, Baseline, Current, 2030Target, 2040Target, 2050Target, Notes] = row;
     if (!sector) return;
     if (!groups[sector]) groups[sector] = [];
     groups[sector].push({ kpi, baseline, current, target, notes });
@@ -36,10 +36,12 @@ async function loadData() {
       kpiBlock.className = "kpi-block";
 
       kpiBlock.innerHTML = `
-        <div class="metric-row"><div class="metric-label">KPI:</div><div>${item.kpi}</div></div>
-        <div class="metric-row"><div class="metric-label">Baseline:</div><div>${item.baseline}</div></div>
-        <div class="metric-row"><div class="metric-label">Current:</div><div>${item.current}</div></div>
-        <div class="metric-row"><div class="metric-label">Target:</div><div>${item.target}</div></div>
+        <div class="metric-row"><div class="metric-label">KPI:</div><div>${item.KPI}</div></div>
+        <div class="metric-row"><div class="metric-label">Baseline:</div><div>${item.Baseline}</div></div>
+        <div class="metric-row"><div class="metric-label">Current:</div><div>${item.Current}</div></div>
+        <div class="metric-row"><div class="metric-label">2030 Target:</div><div>${item.2030Target}</div></div>
+        <div class="metric-row"><div class="metric-label">2030 Target:</div><div>${item.2040Target}</div></div>
+        <div class="metric-row"><div class="metric-label">2030 Target:</div><div>${item.2050Target}</div></div>
       `;
 
       content.appendChild(kpiBlock);
@@ -47,7 +49,7 @@ async function loadData() {
       if (item.notes) {
         const notesDiv = document.createElement("div");
         notesDiv.className = "score-notes";
-        notesDiv.textContent = item.notes;
+        notesDiv.textContent = item.Notes;
         content.appendChild(notesDiv);
       }
     });
