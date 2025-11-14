@@ -5,39 +5,38 @@ body {
   color: #222;
 }
 
-header {
-  text-align: center;
-  padding: 2rem 1rem;
-  background: white;
-  border-bottom: 1px solid #e0e0e0;
-}
-
-main {
-  max-width: 900px;
-  margin: 2rem auto;
-  padding: 1rem;
-}
-
-.score-block {
-  background: white;
-  border: 1px solid #ddd;
+.score-panel {
+  border: 1px solid #ccc;
   border-radius: 8px;
-  padding: 1.25rem 1.5rem;
-  margin-bottom: 1.25rem;
+  margin-bottom: 1rem;
+  background: white;
+  overflow: hidden;
 }
 
-.score-title {
-  margin: 0;
-  margin-bottom: 0.75rem;
+.score-header {
+  padding: 1rem 1.25rem;
   font-size: 1.2rem;
   font-weight: 600;
-  color: #333;
+  background: #f2f4f6;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.score-header:hover {
+  background: #e9ecef;
+}
+
+.score-content {
+  padding: 1rem 1.25rem;
+  display: none; /* collapsed by default */
 }
 
 .metric-row {
   display: grid;
-  grid-template-columns: 140px 1fr;
-  margin: 0.3rem 0;
+  grid-template-columns: 130px 1fr;
+  margin: 0.25rem 0;
 }
 
 .metric-label {
@@ -45,8 +44,15 @@ main {
   color: #555;
 }
 
-.metric-value {
-  color: #222;
+.score-notes {
+  margin-top: 0.75rem;
+  white-space: pre-wrap;
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.arrow {
+  font-size: 1.2rem;
 }
 
 footer {
