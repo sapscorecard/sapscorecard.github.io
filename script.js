@@ -2,44 +2,70 @@ const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vS_RcjTCeOrRM
 async function loadData() {
   const response = await fetch(SHEET_URL);
   const text = await response.text();
+  const rows = text.split("\n").map(r => r.split(","));
+  rows.shift(); // remove header row
 
-  const rows = text.split("\n").map(row => row.split(","));
-  const headers = rows.shift();
+  // Group by sector
+  const groups = {};
+  rows.forEach(row => {
+    const [sector, kpi, baseline, current, target, notes] = row;
+    if (!sector) return;
+    if (!groups[sector]) groups[sector] = [];
+    groups[sector].push({ kpi, baseline, current, target, notes });
+  });
 
   const container = document.getElementById("scorecard");
 
-  rows.forEach(row => {
-    if (!row[0]) return;
+  Object.keys(groups).forEach(sector => {
+    const panel = document.createElement("div");
+    panel.className = "score-panel";
 
-    const div = document.createElement("div");
-    div.className = "score-block";
-
-    div.innerHTML = `
-      <h2 class="score-title">${row[0]}</h2>
-
-      <div class="metric-row">
-        <div class="metric-label">KPI:</div>
-        <div class="metric-value">${row[1]}</div>
-      </div>
-
-      <div class="metric-row">
-        <div class="metric-label">Baseline:</div>
-        <div class="metric-value">${row[2]}</div>
-      </div>
-
-      <div class="metric-row">
-        <div class="metric-label">Current:</div>
-        <div class="metric-value">${row[3]}</div>
-      </div>
-
-      <div class="metric-row">
-        <div class="metric-label">Target:</div>
-        <div class="metric-value">${row[4]}</div>
-      </div>
+    const header = document.createElement("div");
+    header.className = "score-header";
+    header.innerHTML = `
+      <span>${sector}</span>
+      <span class="arrow">▶</span>
     `;
 
-    container.appendChild(div);
+    const content = document.createElement("div");
+    content.className = "score-content";
+
+    // Add KPIs under the panel
+    groups[sector].forEach(item => {
+      const kpiBlock = document.createElement("div");
+      kpiBlock.className = "kpi-block";
+
+      kpiBlock.innerHTML = `
+        <div class="metric-row"><div class="metric-label">KPI:</div><div>${item.kpi}</div></div>
+        <div class="metric-row"><div class="metric-label">Baseline:</div><div>${item.baseline}</div></div>
+        <div class="metric-row"><div class="metric-label">Current:</div><div>${item.current}</div></div>
+        <div class="metric-row"><div class="metric-label">Target:</div><div>${item.target}</div></div>
+      `;
+
+      content.appendChild(kpiBlock);
+
+      if (item.notes) {
+        const notesDiv = document.createElement("div");
+        notesDiv.className = "score-notes";
+        notesDiv.textContent = item.notes;
+        content.appendChild(notesDiv);
+      }
+    });
+
+    // Collapsing functionality
+    header.addEventListener("click", () => {
+      const visible = content.style.display === "block";
+      content.style.display = visible ? "none" : "block";
+      header.querySelector(".arrow").textContent = visible ? "▶" : "▼";
+    });
+
+    panel.appendChild(header);
+    panel.appendChild(content);
+    container.appendChild(panel);
   });
+}
+
+loadData();
 }
 
 loadData();
