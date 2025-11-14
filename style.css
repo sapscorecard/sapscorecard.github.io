@@ -5,6 +5,18 @@ body {
   color: #222;
 }
 
+main {
+  max-width: 850px;    /* controls how narrow the content stays */
+  margin: 0 auto;      /* centers the content */
+  padding: 1rem 1.25rem;
+}
+
+header {
+  max-width: 850px;
+  margin: 0 auto;
+  padding: 1rem 1.25rem;
+}
+
 .score-panel {
   border: 1px solid #ccc;
   border-radius: 8px;
